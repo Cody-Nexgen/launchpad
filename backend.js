@@ -6,7 +6,8 @@
 // Example: "https://my-gamo-backend.onrender.com"
 // Warning: Do NOT include a trailing slash.
 
-self.GAMO_BACKEND = "gamotesttwo.focuznow.com"; 
+self.GAMO_BACKEND = "https://gamotesttwo.focuznow.com/"; 
 
 // If left empty "", it assumes the backend is on the same domain (default for local hosting or full VPS hosting).
+
 
