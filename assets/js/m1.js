@@ -99,13 +99,20 @@ document.addEventListener("DOMContentLoaded", () => {
                 if(!window.__gamo_trap_active) return;
                 if(!document.getElementById("access-overlay")) return fireTrap();
                 for (const m of mutations) {
-                    if (m.target === o || o.contains(m.target)) {
-                        if (m.type === 'childList' && m.removedNodes.length > 0) fireTrap();
-                        else if (m.type === 'attributes' || m.type === 'characterData') {
+                    if (m.target === o) {
+                        // Only care about the overlay container itself being hidden
+                        if (m.type === 'attributes') {
                             const st = window.getComputedStyle(o);
                             if (st.display==="none" || st.visibility==="hidden" || o.hasAttribute("hidden")) fireTrap();
                         }
+                        // If children of the overlay are deleted directly from the overlay container (e.g. they deleted the inner access-box)
+                        if (m.type === 'childList') {
+                            for (const node of m.removedNodes) {
+                                if (node.classList && node.classList.contains('access-box')) fireTrap();
+                            }
+                        }
                     } else if (m.type === 'childList') {
+                        // Care if the overlay itself was deleted from the document
                         for (const node of m.removedNodes) {
                             if (node === o || (node.contains && node.contains(o))) fireTrap();
                         }
